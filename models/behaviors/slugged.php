@@ -346,8 +346,7 @@ class SluggedBehavior extends ModelBehavior {
 			$terms = array(implode(' ', $originalTerms));
 		}
 		if ($return === 'array') {
-			//sort($terms); // bad idea?
-			return array_unique($terms);
+			return array_values(array_unique($terms));
 		}
 		return implode($seperator, $terms);
 	}
