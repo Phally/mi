@@ -137,7 +137,7 @@ class MiDbShell extends Shell {
 		'mysql' => array(
 			'connection' => '--host=:host --port=:port --user=:login --password=:password --default-character-set=:encoding',
 			'copy' => ':export | :import',
-			'standardOptions' => '--set-charset -e',
+			'standardOptions' => '--set-charset -e --single-transaction',
 			'dump' => 'mysqldump :connection -d -R :standardOptions :extraOptions :database :-table',
 			'dumpComplete' => 'mysqldump :connection -R -C -e :standardOptions :extraOptions :database :-table',
 			'dumpCreate' => 'mysqldump :connection -d -R -C --add-drop-table :standardOptions :extraOptions :database :-table',
