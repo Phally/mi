@@ -4,7 +4,7 @@
  *
  * Long description for mi_session.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -36,7 +36,7 @@ class MiSessionComponent extends Overloadable {
  * @var string 'Session'
  * @access public
  */
-	var $name = 'Session';
+	public $name = 'Session';
 
 /**
  * components property
@@ -44,7 +44,7 @@ class MiSessionComponent extends Overloadable {
  * @var array
  * @access public
  */
-	var $components = array('Session');
+	public $components = array('Session');
 
 /**
  * settings property
@@ -52,7 +52,9 @@ class MiSessionComponent extends Overloadable {
  * @var array
  * @access public
  */
-	var $settings = array();
+	public $settings = array();
+
+	public $suppressedFlashMessages = array();
 
 /**
  * initialize method
@@ -64,7 +66,7 @@ class MiSessionComponent extends Overloadable {
  * @access public
  * @return void
  */
-	function initialize(&$Controller, $config = array()) {
+	public function initialize(&$Controller, $config = array()) {
 		$this->settings = array_merge($this->settings, $config);
 		$this->Controller =& $Controller;
 		$Controller->Session =& $this;
@@ -82,15 +84,22 @@ class MiSessionComponent extends Overloadable {
  * @return void
  * @access public
  */
-	function beforeRedirect(&$Controller, $url, $status, $exit) {
+	public function beforeRedirect(&$Controller, $url, $status, $exit) {
 		$count = (int)$this->Session->read('MiSession.redirecting');
+		if ($count === 0) {
+			$this->Session->delete('MiSession.redirectUrls');
+		}
+		$this->Session->write('MiSession.redirectUrls.' . $count, Router::url($url));
 		if ($count > 10) {
 			$this->Session->delete('MiSession.redirecting');
 			if (Configure::read()) {
-				$this->Session->setFlash('A redirect loop was detected');
+				$redirects = "<br />" .  implode($this->Session->read('MiSession.redirectUrls'), "\n<br />");
+				$this->Session->setFlash('A redirect loop was detected - aborting. Redirects:' . $redirects);
 			} else {
-				$this->log('A redirect loop was detected - aborting and sending to home');
+				$redirects = "\n\t" .  implode($this->Session->read('MiSession.redirectUrls'), "\n\t");
+				$this->log('A redirect loop was detected - aborting. Redirects:' . $redirects);
 			}
+			$this->Session->delete('MiSession.redirectUrls');
 			return '/';
 		}
 		$this->Session->write('MiSession.redirecting',  $count + 1);
@@ -105,8 +114,13 @@ class MiSessionComponent extends Overloadable {
  * @return void
  * @access public
  */
-	function beforeRender() {
+	public function beforeRender() {
 		$this->Session->delete('MiSession.redirecting');
+		if ($this->supressedFlashMessages) {
+			foreach($this->supressedFlashMessages as $row) {
+				$this->setFlash($row['message'], $row['element'], $row['params'], $row['key']);
+			}
+		}
 	}
 
 /**
@@ -133,8 +147,9 @@ class MiSessionComponent extends Overloadable {
  * @return void
  * @access public
  */
-	function setFlash($message, $element = 'default', $params = array(), $key = null, $force = false) {
+	public function setFlash($message, $element = 'default', $params = array(), $key = null, $force = false) {
 		if (!$force && $this->Session->read('MiSession.redirecting')) {
+			$this->supressedFlashMessages[] = compact('message', 'element', 'params', 'key');
 			if (Configure::read()) {
 				AppController::log('MiSession flash message supressed: ' . $message, 'redirect');
 			}
@@ -159,7 +174,7 @@ class MiSessionComponent extends Overloadable {
  * @access public
  * @return void
  */
-	function call__($method, $params) {
+	public function call__($method, $params) {
 		return call_user_func_array(array(&$this->Session, $method), $params);
 	}
 }
