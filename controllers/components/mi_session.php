@@ -54,7 +54,16 @@ class MiSessionComponent extends Overloadable {
  */
 	public $settings = array();
 
-	public $suppressedFlashMessages = array();
+/**
+ * supressedFlashMessages
+ *
+ * flash messages generate whilst redirecting (or, due to processing order just after having been redirected)
+ * are temporarily stored here. These messages are processed in beforeRender - or silently dropped
+ *
+ * @var array
+ * @access public
+ */
+	public $supressedFlashMessages = array();
 
 /**
  * initialize method
