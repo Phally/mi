@@ -282,13 +282,13 @@ class TreeHelper extends AppHelper {
 		return $return;
 	}
 
-	function setData($data = array()) {
+	public function setData($data = array()) {
 		$this->_data = $data;
 		reset($this->_data);
 		$this->_stack = array();
 	}
 
-	function setParentData($data = array()) {
+	public function setParentData($data = array()) {
 		$this->_parentData = $data;
 		$key = key(current($data));
 		if (isset($data[0][$key]['lft'])) {
@@ -297,7 +297,7 @@ class TreeHelper extends AppHelper {
 		reset($this->_parentData);
 	}
 
-	function meta($row = array(), $model = null, $_depth = null) {
+	public function meta($row = array(), $model = null, $_depth = null) {
 		extract($this->_settings());
 		if ($model === null) {
 			$model = key($row);
@@ -367,11 +367,11 @@ class TreeHelper extends AppHelper {
 		);
 	}
 
-	function display($row = array(), $seperator = ' » ', $model = null, $field = 'alias') {
+	public function display($row = array(), $seperator = ' » ', $model = null, $field = 'alias') {
 		$path = $this->path($row, $model);
 	}
 
-	function path($row = array(), $model = null) {
+	public function path($row = array(), $model = null) {
 		static $key;
 		if ($model) {
 			$key = $model;
@@ -590,7 +590,7 @@ class TreeHelper extends AppHelper {
 		return '';
 	}
 
-	function _settings($settings = array()) {
+	protected function _settings($settings = array()) {
 		if ($this->_settings && !$settings) {
 			return $this->_settings;
 		}

@@ -230,7 +230,7 @@ class MiFormHelper extends FormHelper {
  * @return void
  * @access public
  */
-	function select($fieldName, $options = array(), $selected = null, $attributes = array()) {
+	public function select($fieldName, $options = array(), $selected = null, $attributes = array()) {
 		$ac = array();
 		if (array_key_exists('--autocomplete--', $options)) {
 			$ac = $options['--autocomplete--'];

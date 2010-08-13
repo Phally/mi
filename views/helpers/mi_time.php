@@ -24,7 +24,7 @@ class MiTimeHelper extends TimeHelper {
 		parent::__construct($settings);
 	}
 
-	function timeAgoInWords($dateTime, $options = array()) {
+	public function timeAgoInWords($dateTime, $options = array()) {
 		if (!isset($this->Asset) || !$this->settings['relativeTime']['enabled'] || isset($options['useCore'])) {
 			unset($options['useCore']);
 			return parent::timeAgoInWords($dateTime, $options);
