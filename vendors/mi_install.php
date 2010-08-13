@@ -333,7 +333,7 @@ class MiInstall extends Object {
  * @return void
  * @access public
  */
-	function settings($config = array()) {
+	public function settings($config = array()) {
 		MiInstall::_settings();
 		if ($config) {
 			MiInstall::$settings = array_merge(MiInstall::$settings, $config);
@@ -421,7 +421,7 @@ class MiInstall extends Object {
  * @return void
  * @access protected
  */
-	function _initGitRemote($path) {
+	protected function _initGitRemote($path) {
 		MiInstall::_exec("cd $path && git branch", $return);
 		preg_match('#\* ([^ ]*)#', trim(implode(' ', $return)), $matches);
 		if (!$matches) {
@@ -453,7 +453,7 @@ class MiInstall extends Object {
  * @return void
  * @access protected
  */
-	function _loop($function, $what, $id = null) {
+	protected function _loop($function, $what, $id = null) {
 		if ($function === '_upgrade') {
 			$options = array('app', 'cake', 'plugin', 'vendor');
 		} else {
@@ -517,7 +517,7 @@ class MiInstall extends Object {
  * @return void
  * @access protected
  */
-	function _neatOut($out, $indent = '') {
+	protected function _neatOut($out, $indent = '') {
 		if (is_numeric($out)) {
 			return;
 		}
@@ -632,7 +632,7 @@ class MiInstall extends Object {
  * @return void
  * @access protected
  */
-	function _subfolders($type = null, $exclude = array()) {
+	protected function _subfolders($type = null, $exclude = array()) {
 		$dirs = App::path($type);
 		$return = array();
 		foreach($dirs as $dir) {

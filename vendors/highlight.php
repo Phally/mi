@@ -4,7 +4,7 @@
  *
  * Some minor modifications to allow it to work with php4.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, CHris Schiflett
  *
@@ -75,7 +75,7 @@ class highlight {
  * @access public
  * @return void
  */
-	function highlight() {
+	public function highlight() {
 		$this->__construct();
 	}
 
@@ -85,7 +85,7 @@ class highlight {
  * @access private
  * @return void
  */
-	function __construct() {
+	public function __construct() {
 		ini_set('highlight.comment', 'comment');
 		ini_set('highlight.default', 'default');
 		ini_set('highlight.keyword', 'keyword');
@@ -100,7 +100,7 @@ class highlight {
  * @access public
  * @return void
  */
-	function process($code= "") {
+	public function process($code= "") {
 		$code= highlight_string($code, TRUE);
 		/* Clean Up */
 		if (phpversion() >= 5) {

@@ -4,7 +4,7 @@
  *
  * Long description for mi.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
