@@ -4,7 +4,7 @@
  *
  * Long description for mi.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -35,7 +35,7 @@ class MiView extends View {
  * @return void
  * @access private
  */
-	function __construct(&$controller) {
+	public function __construct(&$controller) {
 		parent::__construct($controller);
 		$this->theme =& $controller->theme;
 	}
@@ -49,7 +49,7 @@ class MiView extends View {
  * @return void
  * @access public
  */
-	function element($name, $params = array(), $loadHelpers = false) {
+	public function element($name, $params = array(), $loadHelpers = false) {
 		$return = parent::element($name, $params, $loadHelpers);
 		if (strpos($return, 'Not Found:') === 0) {
 			$plugin = null;
@@ -67,7 +67,8 @@ class MiView extends View {
 				$path = array_pop($paths);
 			}
 			$file = $path . 'elements' . DS . $name . $this->ext;
-			return "Not Found: " . $file;
+			$trace = Debugger::trace();
+			return "Not Found: " . $file . $trace;
 		}
 		return $return;
 	}
@@ -79,7 +80,7 @@ class MiView extends View {
  *
  * @return array An array containing the identity elements of an entity
  */
-	function entity() {
+	public function entity() {
 		$assoc = ($this->association) ? $this->association : $this->model;
 		if (!empty($this->entityPath)) {
 			$path = explode('.', $this->entityPath);
@@ -100,7 +101,7 @@ class MiView extends View {
  * @param string $file Custom filename for view
  * @return string Rendered Element
  */
-	function render($action = null, $layout = null, $file = null) {
+	public function render($action = null, $layout = null, $file = null) {
 		if ($this->hasRendered) {
 			return true;
 		}
@@ -152,7 +153,7 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
  * @return void
  * @access protected
  */
-	function &_loadHelpers(&$loaded, $helpers, $parent = null) {
+	public function &_loadHelpers(&$loaded, $helpers, $parent = null) {
 		if (!$parent) {
 			if (in_array('Paginator', $helpers)) {
 				$helpers[] = 'Mi.MiPaginator';
@@ -178,12 +179,13 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
  *
  * Check for plugin/locale/<locale>/views/.../foo.ctp if Config.language has been set
  *
+ * @TODO visibility
  * @param string $plugin ''
  * @param bool $cached true
  * @return array paths
  * @access protected
  */
-	function _paths($plugin = '', $cached = true) {
+	public function _paths($plugin = '', $cached = true) {
 		if (!class_exists('MiCache')) {
 			App::import('Vendor', 'Mi.MiCache');
 		}
@@ -197,6 +199,7 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
  *
  * Wrap the file contents in a comment with the filename (debug mode, and not the layout, only)
  *
+ * @TODO visibility
  * @param mixed $___viewFn
  * @param mixed $___dataForView
  * @param bool $loadHelpers true
@@ -204,7 +207,7 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
  * @return void
  * @access protected
  */
-	function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
+	public function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
 		$return = parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
 		if (!empty($return[0]) && $return[0] === '<' && Configure::read() && !strpos($___viewFn, 'layout')) {
 			$return = "\n" . '<!-- ' . $___viewFn . ' START -->' . "\n" . $return . "\n" . '<!-- ' . $___viewFn . ' END -->' . "\n";
