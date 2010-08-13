@@ -4,7 +4,7 @@
  *
  * Long description for seo.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2009, Andy Dawson
  *
@@ -35,7 +35,7 @@ class SeoComponent extends Object {
  * @var array
  * @access public
  */
-	var $components = array(
+	public $components = array(
 		'RequestHandler',
 	);
 
@@ -45,7 +45,7 @@ class SeoComponent extends Object {
  * @var array
  * @access public
  */
-	var $settings = array(
+	public $settings = array(
 		'autoRun' => true,
 		'sortNamedParams' => true,
 		'maxArgs' => null
@@ -61,7 +61,7 @@ class SeoComponent extends Object {
  * @return void
  * @access public
  */
-	function &getInstance(&$_this = null) {
+	public function &getInstance(&$_this = null) {
 		static $instance = array();
 		if (!$instance) {
 			if (!$_this) {
@@ -80,7 +80,7 @@ class SeoComponent extends Object {
  * @return void
  * @access public
  */
-	function initialize(&$Controller, $config = array()) {
+	public function initialize(&$Controller, $config = array()) {
 		trigger_error('SeoComponent::initialize has been moved to http://github.com/AD7six/mi_seo');
 		$this->settings = array_merge($this->settings, $config);
 		$this->Controller =& $Controller;
@@ -102,7 +102,7 @@ class SeoComponent extends Object {
  * @return void
  * @access public
  */
-	function beforeRedirect(&$Controller, $url, $status, $exit) {
+	public function beforeRedirect(&$Controller, $url, $status, $exit) {
 		if ($this->settings['sortNamedParams']) {
 			return $this->sortUrl($url);
 		}
@@ -116,7 +116,7 @@ class SeoComponent extends Object {
  * @return void
  * @access public
  */
-	function check($maxArgs = null) {
+	public function check($maxArgs = null) {
 		$C =& $this->Controller;
 		if (isset($C->params['requested']) || $this->RequestHandler->isAjax() || $C->data) {
 			return;
@@ -155,7 +155,7 @@ class SeoComponent extends Object {
  * @return mixed $url
  * @access public
  */
-	function sortUrl($url = null) {
+	public function sortUrl($url = null) {
 		if (is_string($url)) {
 			return $url;
 		}
@@ -192,7 +192,7 @@ class SeoComponent extends Object {
  * @return void
  * @access public
  */
-	function url($url, $full = false) {
+	public function url($url, $full = false) {
 		if (is_a($this, 'SeoComponent')) {
 			$_this =& $this;
 		} else {

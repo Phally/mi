@@ -44,7 +44,7 @@ class LanguageComponent extends Object {
  * @return void
  * @access public
  */
-	function initialize(&$Controller, $config = array()) {
+	public function initialize(&$Controller, $config = array()) {
 		App::import('Vendor', 'Mi.MiCache');
 		$lang = MiCache::setting('Site.lang');
 		if (!$lang) {
