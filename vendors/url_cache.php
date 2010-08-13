@@ -3,7 +3,7 @@
  * A class for caching and speeding up router usage
  *
 *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2009, Andy Dawson
  *
@@ -45,7 +45,7 @@ class UrlCache {
  * @var string '/'
  * @access public
  */
-	var $webroot = '/';
+	public $webroot = '/';
 
 /**
  * cache property
@@ -53,7 +53,7 @@ class UrlCache {
  * @var array
  * @access protected
  */
-	var $_cache = array();
+	protected $_cache = array();
 
 /**
  * cacheGlobal property
@@ -61,7 +61,7 @@ class UrlCache {
  * @var array
  * @access protected
  */
-	var $_cacheGlobal = array();
+	protected $_cacheGlobal = array();
 
 /**
  * change property
@@ -71,7 +71,7 @@ class UrlCache {
  * @var bool false
  * @access protected
  */
-	var $_change = false;
+	protected $_change = false;
 
 /**
  * changeGlobal property
@@ -81,7 +81,7 @@ class UrlCache {
  * @var bool false
  * @access protected
  */
-	var $_changeGlobal = false;
+	protected $_changeGlobal = false;
 
 /**
  * extraParams property
@@ -91,7 +91,7 @@ class UrlCache {
  * @var array
  * @access protected
  */
-	var $_extraParams = array();
+	protected $_extraParams = array();
 
 /**
  * The cache key, derived from the current url
@@ -99,7 +99,7 @@ class UrlCache {
  * @var array
  * @access protected
  */
-	var $_key = array();
+	protected $_key = array();
 
 /**
  * getInstance method
@@ -109,7 +109,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function getInstance($path = null, $params = null) {
+	public function getInstance($path = null, $params = null) {
 		static $instance = array();
 		if (!$instance) {
 			$instance[0] = new UrlCache();
@@ -126,7 +126,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function init($path = null, $params = array()) {
+	public function init($path = null, $params = array()) {
 		if (!$path) {
 			$view =& ClassRegistry::getObject('view');
 			if ($view) {
@@ -184,7 +184,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function url($url, $full) {
+	public function url($url, $full) {
 		$isAsset = false;
 		if (is_string($url)) {
 			if (strpos($url, '://')) {
@@ -236,7 +236,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function delete($hash) {
+	public function delete($hash) {
 		if ($this->_cacheGlobal) {
 			if (isset($this->_cacheGlobal[$hash])) {
 				unset($this->_cacheGlobal[$hash]);
@@ -268,7 +268,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function read($hash) {
+	public function read($hash) {
 		if (isset($this->_cache[$hash])) {
 			return $this->_cache[$hash];
 		} elseif(isset($this->_cacheGlobal[$hash])) {
@@ -289,7 +289,7 @@ class UrlCache {
  * @return void
  * @access public
  */
-	function store($hash, $url, $overwrite = false) {
+	public function store($hash, $url, $overwrite = false) {
 		$isAsset = false;
 		if (preg_match('@(^|/)(aud|doc|gen|ico|img|txt|vid|js|css|files)/@', $url)) {
 			$isAsset = true;
@@ -316,7 +316,7 @@ class UrlCache {
  * @return void
  * @access private
  */
-	function __destruct() {
+	public function __destruct() {
 		if ($this->_change) {
 			MiCache::write($this->_key, $this->_cache, 'Url');
 		}
