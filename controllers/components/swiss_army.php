@@ -431,7 +431,7 @@ class SwissArmyComponent extends Object {
  * @return void
  * @access public
  */
-	function initializeBackData() {
+	public function initializeBackData() {
 		$C = $this->Controller;
 		$thread = $this->_browseKey();
 		$this->_history[$thread] = (array)$this->Session->read('history.' . $thread);
