@@ -4,7 +4,7 @@
  *
  * Long description for message_fixture.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -36,7 +36,7 @@ class MessageFixture extends CakeTestFixture {
  * @var string 'Message'
  * @access public
  */
-	var $name = 'Message';
+	public $name = 'Message';
 
 /**
  * fields property
@@ -44,7 +44,7 @@ class MessageFixture extends CakeTestFixture {
  * @var array
  * @access public
  */
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'key' => 'primary'),
 		'random' => array('type' => 'integer', 'null' => false),
 		'name' => array('type' => 'string', 'null' => false),
@@ -61,7 +61,7 @@ class MessageFixture extends CakeTestFixture {
  * @var array
  * @access public
  */
-	var $records = array(
+	public $records = array(
 		array('random' => 1, 'name' => 'First'),
 		array('random' => 10, 'name' => 'Tenth'),
 		array('random' => 4, 'name' => 'Fourth'),

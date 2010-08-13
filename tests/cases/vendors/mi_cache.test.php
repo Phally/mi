@@ -36,7 +36,7 @@ class MiTestModel {
  */
 	public function returnMicrotime() {
 		trigger_error(__FUNCTION__);
-		return getMicrotime();
+		return microtime(true);
 	}
 
 /**
@@ -495,7 +495,7 @@ class MiCacheTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testMi() {
+	public function testMi() {
 		$path =TMP . 'mi_cache_test' . DS;
 		$Folder = new Folder($path, true);
 		new File($path . 'one' . DS . 'empty.php', true);

@@ -2,7 +2,7 @@
 /**
  * Test case for list behavior
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -34,7 +34,7 @@ class MessageList extends CakeTestModel {
  * @var string 'messages'
  * @access public
  */
-	var $useTable = 'messages';
+	public $useTable = 'messages';
 
 /**
  * order property
@@ -42,7 +42,7 @@ class MessageList extends CakeTestModel {
  * @var string 'order'
  * @access public
  */
-	var $order = 'random';
+	public $order = 'random';
 
 /**
  * actsAs property
@@ -52,7 +52,7 @@ class MessageList extends CakeTestModel {
  * @var array
  * @access public
  */
-	var $actsAs = array('Mi.List' => array('sequence' => 'random'));
+	public $actsAs = array('Mi.List' => array('sequence' => 'random'));
 }
 
 /**
@@ -70,7 +70,7 @@ class ListTestCase extends CakeTestCase {
  * @var array
  * @access public
  */
-	var $fixtures = array('plugin.mi.message');
+	public $fixtures = array('plugin.mi.message');
 
 /**
  * start method
@@ -78,7 +78,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function start() {
+	public function start() {
 		parent::start();
 		$this->Message = new MessageList(null, 'messages');
 	}
@@ -89,7 +89,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testFind() {
+	public function testFind() {
 		$results = $this->Message->find('list');
 		$expected = array (
 			1 => 'First',
@@ -112,7 +112,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testVerify() {
+	public function testVerify() {
 		$result = $this->Message->verify();
 		$this->assertIdentical($result, true);
 	}
@@ -123,7 +123,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testRecover() {
+	public function testRecover() {
 		$result = $this->Message->verify();
 		$this->assertIdentical($result, true);
 
@@ -152,7 +152,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testMoveUp() {
+	public function testMoveUp() {
 		$this->Message->id = 9;
 		$this->Message->moveUp();
 		$results = $this->Message->find('list');
@@ -245,7 +245,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testMoveDown() {
+	public function testMoveDown() {
 		$this->Message->id = 9;
 		$this->assertIdentical(true, $this->Message->moveDown());
 		$results = $this->Message->find('list');
@@ -338,7 +338,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testAddNew() {
+	public function testAddNew() {
 		$this->Message->create();
 		$this->Message->save(array('name' => 'New'));
 		$results = $this->Message->find('list');
@@ -364,7 +364,7 @@ class ListTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testDelete() {
+	public function testDelete() {
 		$this->Message->id = 5;
 		$this->Message->delete();
 		$results = $this->Message->find('list');
@@ -399,7 +399,7 @@ class MultiListTestCase extends ListTestCase {
  * @return void
  * @access public
  */
-	function startTest($method) {
+	public function startTest($method) {
 		if ($method != 'start') {
 			$this->Message->Behaviors->attach('List', array('sequence' => 'random', 'scope' => 'section'));
 			$this->Message->updateAll(array('section' => 1));
@@ -423,7 +423,7 @@ class MultiListTestCase extends ListTestCase {
  * @return void
  * @access public
  */
-	function testAddNew() {
+	public function testAddNew() {
 		$this->Message->Behaviors->attach('List', array('sequence' => 'random', 'scope' => 'section'));
 		$this->Message->create();
 		$before = $this->Message->find('all', array('order' => 'id'));
@@ -480,7 +480,7 @@ class MultiListTestCase extends ListTestCase {
 		$this->assertTrue($return);
 	}
 
-	function testFind() {
+	public function testFind() {
 		$results = $this->Message->find('list', array(
 			'conditions' => array('MessageList.section' => 1),
 			'fields' => array('random', 'name')
@@ -507,7 +507,7 @@ class MultiListTestCase extends ListTestCase {
  * @return void
  * @access public
  */
-	function testRecover() {
+	public function testRecover() {
 		$result = $this->Message->verify();
 		$this->assertIdentical($result, true);
 
@@ -536,7 +536,7 @@ class MultiListTestCase extends ListTestCase {
  * @return void
  * @access public
  */
-	function testMoveUp() {
+	public function testMoveUp() {
 		$this->Message->id = 9;
 		$this->Message->moveUp();
 		$results = $this->Message->find('list');
@@ -623,7 +623,7 @@ class MultiListTestCase extends ListTestCase {
 		$this->assertIdentical($results, $expected);
 	}
 
-	function testDelete() {
+	public function testDelete() {
 		$results = $this->Message->find('list', array('fields' => array('random', 'name'), 'conditions' => array('section' => 2)));
 		$expected = array (
 			1 => 'First',

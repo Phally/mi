@@ -4,7 +4,7 @@
  *
  * Long description for product_fixture.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -36,7 +36,7 @@ class ProductFixture extends CakeTestFixture {
  * @var string 'Product'
  * @access public
  */
-	var $name = 'Product';
+	public $name = 'Product';
 
 /**
  * fields property
@@ -44,7 +44,7 @@ class ProductFixture extends CakeTestFixture {
  * @var array
  * @access public
  */
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false),
 		'slug' => array('type' => 'string', 'null' => true),

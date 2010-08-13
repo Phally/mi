@@ -59,7 +59,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testControl() {
+	public function testControl() {
 		$this->Article->recursive = -1;
 		$this->Article->find('all');
 		$this->Article->find('list');
@@ -81,7 +81,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testOneQueryExplicit() {
+	public function testOneQueryExplicit() {
 		$this->Article->oneQuery(array('Comment'));
 		$after = $this->_associations($this->Article);
 
@@ -127,7 +127,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function startTest() {
+	public function startTest() {
 		$this->User =& ClassRegistry::init('User');
 		$this->Article =& ClassRegistry::init('Article');
 		$this->Tag =& ClassRegistry::init('Tag');
@@ -169,7 +169,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function endTest() {
+	public function endTest() {
 		unset($this->Article);
 		unset($this->User);
 		unset($this->Tag);
@@ -185,7 +185,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function assertAssociations(&$Model, $expected = array()) {
+	public function assertAssociations(&$Model, $expected = array()) {
 		$associationTypes = array_keys($expected);
 		$associations = $this->_associations($Model, $associationTypes);
 
@@ -200,7 +200,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function assertQuery($query, $expected = array()) {
+	public function assertQuery($query, $expected = array()) {
 		$query = $this->_normalizeQuery($query);
 		$expected = $this->_normalizeQuery($expected);
 		$errorMessage = "Queries don't match\n$query\n$expected";
@@ -220,7 +220,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return string
  * @access protected
  */
-	function _associations(&$Model, $associationTypes = null) {
+	protected function _associations(&$Model, $associationTypes = null) {
 		if ($associationTypes === true) {
 			$associationTypes = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
 		} elseif ($associationTypes === null) {
@@ -294,7 +294,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return string
  * @access protected
  */
-	function _lastQuery() {
+	protected function _lastQuery() {
 		$this->db =& ConnectionManager::getDataSource($this->Article->useDbConfig);
 		return current(end($this->db->_queriesLog));
 	}
@@ -309,7 +309,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _normalizeQuery($query) {
+	protected function _normalizeQuery($query) {
 		$query = str_replace(array("\n", "\t"), ' ', $query);
 		$query = str_replace(array(
 			$this->db->startQuote,
@@ -328,7 +328,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return array
  * @access protected
  */
-	function _queries() {
+	protected function _queries() {
 		if ($this->db->_queriesCnt === $this->db->_queriesLogMax) {
 			trigger_error('OneQueryTest::_queryCount The max log size has been reached results may not be accurate');
 		}
@@ -349,7 +349,7 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
  * @return int
  * @access protected
  */
-	function _queryCount() {
+	protected function _queryCount() {
 		return count($this->_queries());
 	}
 }

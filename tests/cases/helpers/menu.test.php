@@ -34,7 +34,7 @@ class TestMenuHelper extends MenuHelper {
  * @return void
  * @access public
  */
-	function here() {
+	public function here() {
 		return $this->_here;
 	}
 }
@@ -54,7 +54,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function startTest() {
+	public function startTest() {
 		Router::reload();
 		$this->Controller = new Controller();
 		$this->View = new View($this->Controller);
@@ -77,7 +77,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function endTest() {
+	public function endTest() {
 		unset($this->Menu);
 		ClassRegistry::flush();
 	}
@@ -88,7 +88,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testEmpty() {
+	public function testEmpty() {
 		$result = $this->Menu->display(null, null, false);
 		$this->assertEqual($result, null);
 
@@ -106,7 +106,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testAddSimple() {
+	public function testAddSimple() {
 		$expected = array(
 			array('ul' => array('class' => 'menu')),
 			array('li' => array()),
@@ -153,7 +153,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testNesting() {
+	public function testNesting() {
 		$expected = array(
 			array('ul' => array('class' => 'menu')),
 			array('li' => array()),
@@ -224,7 +224,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testNestingUrl() {
+	public function testNestingUrl() {
 		$expected = array(
 			array('ul' => array('class' => 'menu')),
 			array('li' => array()),
@@ -299,7 +299,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testMultipleMenus() {
+	public function testMultipleMenus() {
 		$this->Menu->settings('main');
 		$this->Menu->add(array(
 			'title' => 'Main Title',
@@ -341,7 +341,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetExplicitActive() {
+	public function testSetExplicitActive() {
 		$this->Menu->add(array(
 			array('title' => '1', 'url' => '#'),
 			array('title' => '1.1', 'under' => '1', 'url' => '#'),
@@ -417,7 +417,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetExplicitActivePath() {
+	public function testSetExplicitActivePath() {
 		$this->Menu->add(array(
 			array('title' => '1', 'url' => '#'),
 			array('title' => '1.1', 'under' => '1', 'url' => '#'),
@@ -493,7 +493,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetExplicitActiveEarlySet() {
+	public function testSetExplicitActiveEarlySet() {
 		$this->Menu->setActive('2.1');
 		$this->Menu->add(array(
 			array('title' => '1', 'url' => '#'),
@@ -569,7 +569,7 @@ class MenuHelperTest extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testHereDetectRouteElements() {
+	public function testHereDetectRouteElements() {
 		Router::connect('/:controller/:year/:month/:day',
 			array('controller' => 'twinkles', 'action' => 'index'));
 

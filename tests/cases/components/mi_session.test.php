@@ -9,7 +9,7 @@ class MiSessionComponentTestCase extends CakeTestCase {
  * @access public
  * @return void
  */
-	function testSessionFlash() {
+	public function testSessionFlash() {
 		$this->assertNull($this->Session->read('Message'));
 
 		$this->Session->setFlash('This is a test message 1');
@@ -69,18 +69,21 @@ class MiSessionComponentTestCase extends CakeTestCase {
 		$this->Session->delete('Message');
 	}
 
-	function testRedirect() {
+	public function testSessionFlashSuppressSimple() {
 	}
 
-	function testRender() {
+	public function testRedirect() {
 	}
 
-	function startTest() {
+	public function testRender() {
+	}
+
+	public function startTest() {
 		$this->Session = new MiSessionComponent();
 		$this->Session->Session = new SessionComponent();
 	}
 
-	function endTest() {
+	public function endTest() {
 		unset($this->MiSession);
 		ClassRegistry::flush();
 	}

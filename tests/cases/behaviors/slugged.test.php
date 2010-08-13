@@ -7,7 +7,7 @@
  *
  * Long description for slugged.test.php
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * Copyright (c) 2008, Andy Dawson
  *
@@ -40,7 +40,7 @@ class MessageSlugged extends CakeTestModel {
  * @var string 'messages'
  * @access public
  */
-	var $useTable = 'messages';
+	public $useTable = 'messages';
 
 /**
  * actsAs property
@@ -48,7 +48,7 @@ class MessageSlugged extends CakeTestModel {
  * @var array
  * @access public
  */
-	var $actsAs = array('Mi.Slugged' => array(
+	public $actsAs = array('Mi.Slugged' => array(
 		'mode' => 'id',
 		'replace' => false
 	));
@@ -69,7 +69,7 @@ class SluggedTestCase extends CakeTestCase {
  * @var array
  * @access public
  */
-	var $fixtures = array('plugin.mi.message');
+	public $fixtures = array('plugin.mi.message');
 
 /**
  * skipSetupTests property
@@ -77,7 +77,7 @@ class SluggedTestCase extends CakeTestCase {
  * @var bool true
  * @access public
  */
-	var $skipSetupTests = true;
+	public $skipSetupTests = true;
 
 /**
  * getTests method
@@ -89,7 +89,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function getTests()  {
+	public function getTests()  {
 		ini_set('memory_limit', '256M');
 		$memoryLimit = (int)ini_get('memory_limit');
 		$max = 0; //(int)($memoryLimit / 12);
@@ -118,11 +118,12 @@ class SluggedTestCase extends CakeTestCase {
  * Prevent intensive W3 test, and the build tests (used to generate the testSection tests) unless
  * explicitly specified
  *
+ * @TODO visibility
  * @param mixed $method
  * @return void
  * @access protected
  */
-	function _isTest($method) {
+	public function _isTest($method) {
 		if (strtolower($method) == 'testaction') {
 			return false;
 		}
@@ -145,12 +146,12 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function start() {
+	public function start() {
 		parent::start();
 		$this->Model = new MessageSlugged();
 	}
 
-	function testRemoveStopWords() {
+	public function testRemoveStopWords() {
 		$array = $this->Model->removeStopWords('My name is Michael Paine, and I am a nosey neighbour');
 		$expected = array(
 			'Michael Paine',
@@ -184,7 +185,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBuildRegex() {
+	public function testBuildRegex() {
 		$chars = array();
 		$string = '';
 		for($hex1 = 0; $hex1 < 16; $hex1++) {
@@ -233,7 +234,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBuildTest() {
+	public function testBuildTest() {
 		$this->_buildTest();
 	}
 
@@ -247,7 +248,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _buildTest($hex1Limit = 16, $hex2Limit = 16, $hex1Start = 16, $hex2Start = 0) {
+	protected function _buildTest($hex1Limit = 16, $hex2Limit = 16, $hex1Start = 16, $hex2Start = 0) {
 		$skip = array(15, 16);
 		$path = TMP . 'tests' . DS . 'slug_test.php';
 		@unlink($path);
@@ -270,7 +271,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _buildTestFunction($section, $limit = 16, $start = 0) {
+	protected function _buildTestFunction($section, $limit = 16, $start = 0) {
 		$out = "\tfunction testSection$section() {\n";
 		$allEmpty = true;
 		for($hex1 = $start; $hex1 < $limit; $hex1++) {
@@ -315,7 +316,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testW3Validity() {
+	public function testW3Validity() {
 		$modes = array('display', 'url', 'class', 'id');
 		$modes = array('id'); // overriden
 		App::import('Core', 'HttpSocket');
@@ -341,7 +342,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _testMode($mode, $hex1Limit = 16, $hex2Limit = 16, $hex1Start = 0, $hex2Start = 0) {
+	protected function _testMode($mode, $hex1Limit = 16, $hex2Limit = 16, $hex1Start = 0, $hex2Start = 0) {
 		for($hex1 = $hex1Start; $hex1 < $hex1Limit; $hex1++) {
 			$suffix = dechex($hex1) . dechex($hex2Start) . '_' . dechex($hex1) . dechex($hex2Limit -1);
 			$full = TMP . 'tests' . DS . 'slug_' . $mode . '_' . $suffix . '.html';
@@ -369,7 +370,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _testFile($path) {
+	protected function _testFile($path) {
 		$request = array(
 			'method' => 'POST',
 			'uri' => 'http://validator.w3.org/check',
@@ -410,7 +411,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access protected
  */
-	function _parseW3Response($response, $test, $inputFile) {
+	protected function _parseW3Response($response, $test, $inputFile) {
 		preg_match_all('@<span class="err_type">.*</span>.*<em>Line (.*),.*</em>@sU', $response, $result);
 		if (!$result[1]) {
 			trigger_error('couldn\'t parse the error messages generated for ' . $inputFile);
@@ -456,7 +457,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return string file path
  * @access protected
  */
-	function _createTestFile($section, $mode = 'display') {
+	protected function _createTestFile($section, $mode = 'display') {
 		$path = TMP . 'tests' . DS . '_slug_' . $mode . '_' . $section . '.html';
 		$file = new File($path, true);
 		$this->__writeHeader($file, $section);
@@ -492,7 +493,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access private
  */
-	function __writeHeader($file, $title) {
+	private function __writeHeader($file, $title) {
 		$file->write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">');
 		$file->append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' . "\n");
 		$file->append('<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><style type="text/css">table {width:100%}.slugged{background:yellow}.illegal{background:red}</style>');
@@ -510,7 +511,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return string
  * @access private
  */
-	function __renderChar($hexCode, $mode = 'id') {
+	private function __renderChar($hexCode, $mode = 'id') {
 		$decCode = hexdec($hexCode);
 		$display = $char = html_entity_decode('&#' . $decCode . ';', ENT_NOQUOTES, 'UTF-8');
 		$char = $this->Model->slug($char, false);
@@ -540,7 +541,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection0() {
+	public function testSection0() {
 		$string  = ' !"#$%&\'()*+,-./';
 		$expects = '----------------';
 		$result = $this->Model->slug($string, false);
@@ -1811,7 +1812,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection1() {
+	public function testSection1() {
 		$string  = 'ကခဂဃငစဆဇဈဉညဋဌဍဎဏ';
 		$expects = '----------------';
 		$result = $this->Model->slug($string, false);
@@ -3102,7 +3103,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection2() {
+	public function testSection2() {
 		$string  = '           ​‌‍‎‏';
 		$expects = '----------------';
 		$result = $this->Model->slug($string, false);
@@ -4393,7 +4394,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection3() {
+	public function testSection3() {
 		$string  = '　、。〃〄々〆〇〈〉《》「」『』';
 		$expects = '-----々-〇--------';
 		$result = $this->Model->slug($string, false);
@@ -5684,7 +5685,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection4() {
+	public function testSection4() {
 		$string  = '䀀䀁䀂䀃䀄䀅䀆䀇䀈䀉䀊䀋䀌䀍䀎䀏';
 		$expects = '----------------';
 		$result = $this->Model->slug($string, false);
@@ -6975,7 +6976,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection5() {
+	public function testSection5() {
 		$string  = '倀倁倂倃倄倅倆倇倈倉倊個倌倍倎倏';
 		$expects = '倀倁倂倃倄倅倆倇倈倉倊個倌倍倎倏';
 		$result = $this->Model->slug($string, false);
@@ -8266,7 +8267,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection6() {
+	public function testSection6() {
 		$string  = '怀态怂怃怄怅怆怇怈怉怊怋怌怍怎怏';
 		$expects = '怀态怂怃怄怅怆怇怈怉怊怋怌怍怎怏';
 		$result = $this->Model->slug($string, false);
@@ -9557,7 +9558,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection7() {
+	public function testSection7() {
 		$string  = '瀀瀁瀂瀃瀄瀅瀆瀇瀈瀉瀊瀋瀌瀍瀎瀏';
 		$expects = '瀀瀁瀂瀃瀄瀅瀆瀇瀈瀉瀊瀋瀌瀍瀎瀏';
 		$result = $this->Model->slug($string, false);
@@ -10848,7 +10849,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection8() {
+	public function testSection8() {
 		$string  = '耀老耂考耄者耆耇耈耉耊耋而耍耎耏';
 		$expects = '耀老耂考耄者耆耇耈耉耊耋而耍耎耏';
 		$result = $this->Model->slug($string, false);
@@ -12139,7 +12140,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSection9() {
+	public function testSection9() {
 		$string  = '退送适逃逄逅逆逇逈选逊逋逌逍逎透';
 		$expects = '退送适逃逄逅逆逇逈选逊逋逌逍逎透';
 		$result = $this->Model->slug($string, false);
@@ -13430,7 +13431,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSectiona() {
+	public function testSectiona() {
 		$string  = 'ꀀꀁꀂꀃꀄꀅꀆꀇꀈꀉꀊꀋꀌꀍꀎꀏ';
 		$expects = '----------------';
 		$result = $this->Model->slug($string, false);
@@ -14721,7 +14722,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSectionb() {
+	public function testSectionb() {
 		$string  = '뀀뀁뀂뀃뀄뀅뀆뀇뀈뀉뀊뀋뀌뀍뀎뀏';
 		$expects = '뀀뀁뀂뀃뀄뀅뀆뀇뀈뀉뀊뀋뀌뀍뀎뀏';
 		$result = $this->Model->slug($string, false);
@@ -16012,7 +16013,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSectionc() {
+	public function testSectionc() {
 		$string  = '쀀쀁쀂쀃쀄쀅쀆쀇쀈쀉쀊쀋쀌쀍쀎쀏';
 		$expects = '쀀쀁쀂쀃쀄쀅쀆쀇쀈쀉쀊쀋쀌쀍쀎쀏';
 		$result = $this->Model->slug($string, false);
@@ -17304,7 +17305,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSectiond() {
+	public function testSectiond() {
 		$string  = '퀀퀁퀂퀃퀄퀅퀆퀇퀈퀉퀊퀋퀌퀍퀎퀏';
 		$expects = '퀀퀁퀂퀃퀄퀅퀆퀇퀈퀉퀊퀋퀌퀍퀎퀏';
 		$result = $this->Model->slug($string, false);
@@ -17953,7 +17954,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testUrlMode() {
+	public function testUrlMode() {
 		$this->Model->Behaviors->attach('Slugged', array('mode' => 'url', 'replace' => false));
 		$string  = 'standard string';
 		$expects = 'standard-string';
@@ -18075,7 +18076,7 @@ class SluggedTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testTruncateMultibyte() {
+	public function testTruncateMultibyte() {
 		$testString = 'モデルのデータベースとデータソース';
 		$encoding = Configure::read('App.encoding');
 		Configure::write('App.encoding', 'UTF-8');

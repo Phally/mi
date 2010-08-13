@@ -10,7 +10,7 @@ class MiTestView extends MiView {
  * @access public
  * @return void
  */
-	function getViewFileName($name = null) {
+	public function getViewFileName($name = null) {
 		return $this->_getViewFileName($name);
 	}
 
@@ -21,7 +21,7 @@ class MiTestView extends MiView {
  * @access public
  * @return void
  */
-	function getLayoutFileName($name = null) {
+	public function getLayoutFileName($name = null) {
 		return $this->_getLayoutFileName($name);
 	}
 
@@ -34,7 +34,7 @@ class MiTestView extends MiView {
  * @access public
  * @return void
  */
-	function loadHelpers(&$loaded, $helpers, $parent = null) {
+	public function loadHelpers(&$loaded, $helpers, $parent = null) {
 		return $this->_loadHelpers($loaded, $helpers, $parent);
 	}
 
@@ -46,7 +46,7 @@ class MiTestView extends MiView {
  * @access public
  * @return void
  */
-	function paths($plugin = null, $cached = true) {
+	public function paths($plugin = null, $cached = true) {
 		return $this->_paths($plugin, $cached);
 	}
 
@@ -58,7 +58,7 @@ class MiTestView extends MiView {
  * @access public
  * @return void
  */
-	function cakeError($method, $messages) {
+	public function cakeError($method, $messages) {
 		return new ViewTestErrorHandler($method, $messages);
 	}
 }
@@ -81,7 +81,7 @@ class MiViewDoesntBreakCoreTest extends ViewTest {
  * @return void
  * @access public
  * /
-	function setup() {
+	public function setup() {
 		parent::setup();
 		$this->View = new MiView($this->PostsController);
 	}
@@ -97,12 +97,12 @@ class MiPostsController extends Controller {
 
 class MiViewTest extends CakeTestCase {
 
-	function setup() {
+	public function setup() {
 		$this->PostsController = new MiPostsController();
 		$this->View = new MiTestView($this->PostsController);
 	}
 
-	function testloadHelpers() {
+	public function testloadHelpers() {
 		$loaded = array();
 		$toLoad = array(
 			'MiHtml',
@@ -121,15 +121,15 @@ class MiViewTest extends CakeTestCase {
 		$this->assertTrue(get_class($helpers['Paginator']), 'MiPaginatorHelper');
 	}
 
-	function testPaths() {
+	public function testPaths() {
 	}
 
-	function testRender() {
+	public function testRender() {
 	}
 
-	function testElement() {
+	public function testElement() {
 	}
 
-	function testEntity() {
+	public function testEntity() {
 	}
 }

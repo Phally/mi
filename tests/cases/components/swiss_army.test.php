@@ -91,7 +91,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function add() {
+	public function add() {
 		$this->render('add');
 	}
 
@@ -102,7 +102,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!isset($this->ids[$id]) || $this->data) {
 			return $this->_back();
 		}
@@ -116,7 +116,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function delete($id = null) {
+	public function delete($id = null) {
 		unset ($this->ids[$id]);
 		$this->actions[] = 'delete';
 		$this->_back();
@@ -129,7 +129,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function view($id = null) {
+	public function view($id = null) {
 		if (!isset($this->ids[$id])) {
 			return $this->_back();
 		}
@@ -143,7 +143,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function index($page = 1) {
+	public function index($page = 1) {
 		return $this->render('index:' . $page);
 	}
 
@@ -153,7 +153,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function here() {
+	public function here() {
 		return end($this->actions);
 	}
 
@@ -163,7 +163,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function referer() {
+	public function referer() {
 		$return = Configure::read('Testing.referer');
 		if ($return) {
 			return $return;
@@ -178,7 +178,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access public
  */
-	function render($action = null) {
+	public function render($action = null) {
 		$this->actions[] = $action;
 		$this->TestSwissArmy->beforeRender();
 		return 'rendered ' . $action;
@@ -190,7 +190,7 @@ class TestSwissArmyController extends Controller {
  * @return void
  * @access protected
  */
-	function _back() {
+	protected function _back() {
 		$url = $this->TestSwissArmy->back(1, null, false);
 		$this->actions[] = $url;
 		return 'redirect to ' . $url;
@@ -223,7 +223,7 @@ class TestSwissArmyComponent extends SwissArmyComponent {
  * @return void
  * @access public
  */
-	function addToHistory($url, $referer = null) {
+	public function addToHistory($url, $referer = null) {
 		$thread = $this->_browseKey();
 		if (!$referer) {
 			if ($this->_history) {
@@ -247,7 +247,7 @@ class TestSwissArmyComponent extends SwissArmyComponent {
  * @return void
  * @access public
  */
-	function history() {
+	public function history() {
 		return $this->_history;
 	}
 
@@ -261,7 +261,7 @@ class TestSwissArmyComponent extends SwissArmyComponent {
  * @return void
  * @access public
  */
-	function initialize(&$C, $config = array()) {
+	public function initialize(&$C, $config = array()) {
 		$currentUrl = Configure::read('Testing.url');
 		if ($currentUrl) {
 			$C->here = $currentUrl;
@@ -281,7 +281,7 @@ class TestSwissArmyComponent extends SwissArmyComponent {
  * @return void
  * @access public
  */
-	function simulate($here, $referer = null,  $history = array()) {
+	public function simulate($here, $referer = null,  $history = array()) {
 		$this->_here = $here;
 		$this->_referer = $referer;
 
@@ -331,7 +331,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function startTest() {
+	public function startTest() {
 		Router::reload();
 		$this->SwissArmy = new TestSwissArmyComponent();
 		$this->SwissArmy->Session = new SessionComponent();
@@ -346,7 +346,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function endTest() {
+	public function endTest() {
 		unset($this->SwissArmy);
 		ClassRegistry::flush();
 	}
@@ -357,7 +357,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testLoadComponent() {
+	public function testLoadComponent() {
 		$this->assertTrue(empty($this->SwissArmy->Controller->Cookie));
 		$this->SwissArmy->loadComponent('Cookie');
 		$this->assertTrue(is_object($this->SwissArmy->Controller->Cookie));
@@ -372,7 +372,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBackNormal() {
+	public function testBackNormal() {
 		$history = array(
 			'/' => '/news',
 			'/news' => '/news/view/1',
@@ -403,7 +403,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBackLoginNormal() {
+	public function testBackLoginNormal() {
 		$history = array(
 			'/' => '/news',
 			'/news' => '/news/view/1',
@@ -432,7 +432,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBackLoginNoRender() {
+	public function testBackLoginNoRender() {
 		$history = array(
 			'/' => '/news',
 			'/news' => '/news/view/1',
@@ -453,7 +453,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testBackWithController() {
+	public function testBackWithController() {
 		return;
 		$params = array('method' => 'get', 'return' => 'view'); // not really, render is overriden
 
@@ -483,7 +483,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testHandlePostActions() {
+	public function testHandlePostActions() {
 	}
 
 /**
@@ -492,7 +492,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testAutoLanguage() {
+	public function testAutoLanguage() {
 	}
 
 /**
@@ -501,7 +501,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testAutoLayout() {
+	public function testAutoLayout() {
 	}
 
 /**
@@ -510,7 +510,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testLookup() {
+	public function testLookup() {
 	}
 
 /**
@@ -519,7 +519,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testParseSearchFilter() {
+	public function testParseSearchFilter() {
 	}
 
 /**
@@ -528,7 +528,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetDefaultPageTitle() {
+	public function testSetDefaultPageTitle() {
 	}
 
 /**
@@ -537,7 +537,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetFilterFlash() {
+	public function testSetFilterFlash() {
 	}
 
 /**
@@ -546,7 +546,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testSetSelects() {
+	public function testSetSelects() {
 	}
 
 /**
@@ -559,7 +559,7 @@ class SwissArmyComponentTestCase extends CakeTestCase {
  * @return void
  * @access public
  */
-	function testAction($url, $params = array()) {
+	public function testAction($url, $params = array()) {
 		static $referer = null;
 
 		Configure::write('Testing.url', $url);
