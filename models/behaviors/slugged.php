@@ -270,6 +270,9 @@ class SluggedBehavior extends ModelBehavior {
  * @access public
  */
 	public function removeStopWords(&$Model, $string = '', $params = array()) {
+		if (!$string) {
+			return $string;
+		}
 		$seperator = ' ';
 		$splitOnStopWord = true;
 		$return = 'array';
@@ -298,8 +301,8 @@ class SluggedBehavior extends ModelBehavior {
 		}
 
 		if (is_array($string)) {
-			$terms = $string;
-			foreach($terms as $i => $term) {
+			$originalTerms = $terms = $string;
+			foreach($terms as $i => &$term) {
 				$term = trim(preg_replace('@[^\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}]@u', $seperator, $term), $seperator);
 			}
 			$lTerms = array_map('mb_strtolower', $terms);
