@@ -276,6 +276,7 @@ class SluggedBehavior extends ModelBehavior {
 		$seperator = ' ';
 		$splitOnStopWord = true;
 		$return = 'array';
+		$originalIfEmpty = true;
 		extract ($params);
 
 		if (!class_exists('MiCache')) {
@@ -345,7 +346,7 @@ class SluggedBehavior extends ModelBehavior {
 			}
 		}
 
-		if (!$terms) {
+		if (!$terms && $originalIfEmpty) {
 			$terms = array(implode(' ', $originalTerms));
 		}
 		if ($return === 'array') {
