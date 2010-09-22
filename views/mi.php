@@ -112,6 +112,18 @@ class MiView extends View {
 		}
 
 		if ($action !== false && $viewFileName = $this->_getViewFileName($action)) {
+			/**
+			 *
+			 * A simple way of finding what files are unused. Use your app then
+			 * To find which views you used in the past 10 minutes
+			 *  	find /path -mmin -11
+			 * To find which views you haven't used in the past 10 minutes
+			 *  	find /path -mmin +9
+			 *
+			 */
+			if (Configure::read()) {
+				touch($viewFileName);
+			}
 			$out = $this->_render($viewFileName, $this->viewVars);
 		}
 
@@ -192,26 +204,5 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
 		$plugin = (string)$plugin;
 		$theme = (string)$this->theme;
 		return MiCache::mi('paths', 'view', compact('plugin', 'theme'));
-	}
-
-/**
- * render method
- *
- * Wrap the file contents in a comment with the filename (debug mode, and not the layout, only)
- *
- * @TODO visibility
- * @param mixed $___viewFn
- * @param mixed $___dataForView
- * @param bool $loadHelpers true
- * @param bool $cached false
- * @return void
- * @access protected
- */
-	public function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
-		$return = parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
-		if (!empty($return[0]) && $return[0] === '<' && Configure::read() && !strpos($___viewFn, 'layout')) {
-			$return = "\n" . '<!-- ' . $___viewFn . ' START -->' . "\n" . $return . "\n" . '<!-- ' . $___viewFn . ' END -->' . "\n";
-		}
-		return $return;
 	}
 }
