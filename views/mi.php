@@ -193,25 +193,4 @@ if (isset($this->loaded['cache']) && (($this->cacheAction != false)) && (Configu
 		$theme = (string)$this->theme;
 		return MiCache::mi('paths', 'view', compact('plugin', 'theme'));
 	}
-
-/**
- * render method
- *
- * Wrap the file contents in a comment with the filename (debug mode, and not the layout, only)
- *
- * @TODO visibility
- * @param mixed $___viewFn
- * @param mixed $___dataForView
- * @param bool $loadHelpers true
- * @param bool $cached false
- * @return void
- * @access protected
- */
-	public function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
-		$return = parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
-		if (!empty($return[0]) && $return[0] === '<' && Configure::read() && !strpos($___viewFn, 'layout')) {
-			$return = "\n" . '<!-- ' . $___viewFn . ' START -->' . "\n" . $return . "\n" . '<!-- ' . $___viewFn . ' END -->' . "\n";
-		}
-		return $return;
-	}
 }
