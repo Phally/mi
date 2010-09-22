@@ -53,17 +53,24 @@ class Mi {
  */
 	public function actions($controller = '', $type = 'public', $plugin = false, $diffTo = 'Controller') {
 		if (is_array($type)) {
-			extract(am(array('type' => 'public'), $controller));
-		}
-		if ($type == 'admin') {
-			$excludePatterns = array('/^(?!(admin)).*/');
-		} else {
-			$excludePatterns = array('/admin_.*/');
+			extract(am(array('type' => 'public'), $type));
 		}
 		if (!$controller) {
 			return false;
 		}
+
+		if ($type !== 'public') {
+			$excludePatterns = array("/^(?!($type)).*/");
+		} else {
+			$prefixes = Configure::read('Routing.prefixes');
+			if ($prefixes) {
+				$excludePatterns = array('/^(' . implode('|', $prefixes) . ')_.*/');
+			} else {
+				$excludePatterns = array('/admin_.*/');
+			}
+		}
 		if (is_string($controller)) {
+			$controller = ucfirst(Inflector::camelize($controller));
 			App::import('Core', 'Controller');
 			App::import('Controller', ($plugin?$plugin . '.':'') . $controller);
 			$controller .= 'Controller';
