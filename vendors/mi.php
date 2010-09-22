@@ -148,6 +148,13 @@ class Mi {
 			}
 			$files[$type] = array();
 			$paths = Mi::paths($type, compact('plugin'));
+			if (!$includeCore) {
+				foreach($paths as $i => $path) {
+					if (strpos($path, DS . 'cake' . DS . 'libs') !== false)  {
+						unset ($paths[$i]);
+					}
+				}
+			}
 			if ($type === 'Shell') {
 				$vPaths = Mi::paths('Vendor');
 				foreach ($vPaths as &$vPath) {
@@ -155,15 +162,7 @@ class Mi {
 				}
 				$paths = am($vPaths, $paths);
 			}
-			$core = CAKE_CORE_INCLUDE_PATH . DS . 'cake' . DS . 'basics.php';
-			if ($_core = realpath($core)) {
-				$core = $_core;
-			}
-			$core = dirname($core);
 			foreach ($paths as $i => $path) {
-				if (strpos(realpath($path), $core) === 0 && !$includeCore) {
-					continue;
-				}
 				if (rtrim($path, DS) == rtrim(APP, DS)) {
 					$folder = new Folder(APP);
 					$tFiles = $folder->find(low($type) . '.*php');
