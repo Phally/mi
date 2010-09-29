@@ -126,7 +126,7 @@ class MiFormHelper extends FormHelper {
  * @access public
  */
 	public function dateTime($fieldName, $dateFormat = 'DMY', $timeFormat = '12', $selected = null, $options = array(), $showEmpty = true) {
-		if (!empty($options['selects'])) {
+		if (empty($dateFormat) || !empty($options['selects'])) {
 			unset($options['selects']);
 			return parent::dateTime($fieldName, $dateFormat, $timeFormat, $selected, $options, $showEmpty);
 		}
@@ -134,7 +134,7 @@ class MiFormHelper extends FormHelper {
 			array('type' => 'text'), $options
 		));
 		$id = $options['id'];
-		if (isset($this->Asset)) {
+		if (isset($this->Asset) && empty($options['noJs'])) {
 			$this->Asset->css('/js/theme/ui.datepicker', null, null, $this->name);
 			$this->Asset->js('jquery-ui', $this->name);
 			$timeSuffix = '';
