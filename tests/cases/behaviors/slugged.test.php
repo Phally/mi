@@ -18101,4 +18101,35 @@ class SluggedTestCase extends CakeTestCase {
 
 		Configure::write('App,encoding', $encoding);
 	}
+
+/**
+ * testDuplicateWithLengthRestriction method
+ *
+ * If there's a length restriction - ensure it's respected by the unique slug routine
+ *
+ * @return void
+ * @access public
+ */
+	public function testDuplicateWithLengthRestriction() {
+		$this->Model->Behaviors->attach('Slugged', array('label' => 'name', 'length' => 10, 'unique' => true));
+
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawson'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawsom'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawsoo'));
+
+		$result = $this->Model->find('list', array(
+			'conditions' => array('name LIKE' => 'Andy Daw%'),
+			'fields' => array('name', 'slug'),
+			'order' => 'name'
+		));
+		$expects = array(
+			'Andy Dawson' => 'Andy-Dawso',
+			'Andy Dawsom' => 'Andy-Daw-1',
+			'Andy Dawsoo' => 'Andy-Daw-2'
+		);
+		$this->assertEqual($result, $expects);
+	}
 }

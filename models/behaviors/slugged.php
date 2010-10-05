@@ -238,6 +238,9 @@ class SluggedBehavior extends ModelBehavior {
 				while($Model->hasAny($conditions)) {
 					$i++;
 					$suffix	= $seperator . $i;
+					if (strlen($slug . $suffix) > $length) {
+						$slug = substr($slug, 0, $length - strlen($suffix));
+					}
 					$conditions[$Model->alias . '.' . $slugField] = $slug . $suffix;
 				}
 				if ($suffix) {
