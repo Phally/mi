@@ -18119,6 +18119,22 @@ class SluggedTestCase extends CakeTestCase {
 		$this->Model->save(array('name' => 'Andy Dawsom'));
 		$this->Model->create();
 		$this->Model->save(array('name' => 'Andy Dawsoo'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso3'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso4'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso5'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso6'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso7'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso8'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso9'));
+		$this->Model->create();
+		$this->Model->save(array('name' => 'Andy Dawso0'));
 
 		$result = $this->Model->find('list', array(
 			'conditions' => array('name LIKE' => 'Andy Daw%'),
@@ -18128,7 +18144,15 @@ class SluggedTestCase extends CakeTestCase {
 		$expects = array(
 			'Andy Dawson' => 'Andy-Dawso',
 			'Andy Dawsom' => 'Andy-Daw-1',
-			'Andy Dawsoo' => 'Andy-Daw-2'
+			'Andy Dawsoo' => 'Andy-Daw-2',
+			'Andy Dawso3' => 'Andy-Daw-3',
+			'Andy Dawso4' => 'Andy-Daw-4',
+			'Andy Dawso5' => 'Andy-Daw-5',
+			'Andy Dawso6' => 'Andy-Daw-6',
+			'Andy Dawso7' => 'Andy-Daw-7',
+			'Andy Dawso8' => 'Andy-Daw-8',
+			'Andy Dawso9' => 'Andy-Daw-9',
+			'Andy Dawso0' => 'Andy-Da-10'
 		);
 		$this->assertEqual($result, $expects);
 	}
