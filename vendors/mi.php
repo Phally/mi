@@ -479,7 +479,7 @@ class Mi {
 /**
  * paths method
  *
- * Return all paths - taking about of any 'bespoke' logic
+ * Return all paths - taking account of any 'bespoke' logic
  *
  * @param mixed $type null
  * @param array $params array()
@@ -542,6 +542,11 @@ class Mi {
 		}
 		if (!$paths) {
 			$paths = array(APP . low($type));
+		}
+		foreach($paths as $i => $path) {
+			if (!is_dir($path)) {
+				unset ($paths[$i]);
+			}
 		}
 		return $paths;
 	}
