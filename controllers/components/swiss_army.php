@@ -437,10 +437,15 @@ class SwissArmyComponent extends Object {
 		$this->_history[$thread] = (array)$this->Session->read('history.' . $thread);
 		$this->_here = $this->_normalizeUrl($C->here);
 		$this->_referer = $this->_normalizeUrl($C->referer());
-		$this->_fallBack = $this->_normalizeUrl(array('action' => 'index'));
+		$sessionReferer = $this->Session->read('referer');
+		if ($this->Controller->name === 'CakeError') {
+			$this->_fallBack = '/';
+		} else {
+			$this->_fallBack = $this->_normalizeUrl(array('action' => 'index'));
+		}
 		if (isset($this->_history[$thread][$this->_here])) {
 			$this->_last = $this->_history[$thread][$this->_here];
-		} elseif ($this->_referer !== '/') {
+		} elseif ($this->_referer !== '/' || !$sessionReferer || $sessionReferer === '/') {
 			$this->_last = $this->_referer;
 		} else {
 			$this->_last = $this->_fallBack;
