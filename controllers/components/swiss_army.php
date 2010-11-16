@@ -423,6 +423,10 @@ class SwissArmyComponent extends Object {
 			return;
 		}
 		$this->_autoLanguage();
+
+		if (!isset($C->postActions)) {
+			$C->postActions = array();
+		}
 	}
 
 /**
