@@ -409,7 +409,6 @@ class SwissArmyComponent extends Object {
 		}
 
 		$this->_storeHistory();
-		$this->_autoLayout();
 
 		if ($C->name === 'CakeError') {
 			if ($this->settings['redirectOnError']) {
@@ -480,28 +479,6 @@ class SwissArmyComponent extends Object {
 			if ($lang) {
 				$this->Session->write('Config.language', $lang);
 			}
-		}
-	}
-
-/**
- * autoLayout method
- *
- * Set the admin layout automatically, if it's an error - set to the error layout
- *
- * @return void
- * @access protected
- */
-	protected function _autoLayout() {
-		$C =& $this->Controller;
-		if (!empty($C->params['requested']) || !$this->settings['autoLayout'] || $C->layout != 'default') {
-			return;
-		}
-		if ($this->RequestHandler->isAjax()) {
-			$C->layout = isset($C->params['url']['layout'])?$C->params['url']['layout']:'ajax';
-		} elseif (!empty($C->params['admin'])) {
-			$C->layout = 'admin_default';
-		} elseif ($C->name === 'CakeError' && $C->viewPath === 'errors') {
-			$C->layout = 'error';
 		}
 	}
 
