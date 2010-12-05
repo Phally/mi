@@ -120,6 +120,32 @@ class OneQueryBehaviorTestCase extends CakeTestCase {
 	}
 
 /**
+ * testReset method
+ *
+ * @return void
+ * @access public
+ */
+	public function testReset() {
+		$before = array();
+		foreach ($this->Article->__associations as $type) {
+			$before[$type] = $this->Article->{$type};
+		}
+		$this->Article->oneQuery(array('Comment'));
+		$results = $this->Article->find('all', array(
+			'recursive' => 0,
+			'fields' => '*',
+			'conditions' => array(
+				'Comment.user_id' => 2
+			)
+		));
+		$this->Article->reset();
+		foreach ($this->Article->__associations as $type) {
+			$this->assertIdentical($this->Article->{$type}, $before[$type]);
+		}
+
+	}
+
+/**
  * Method executed before each test
  *
  * Setup models, clear the dbo sql log

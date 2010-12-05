@@ -131,6 +131,9 @@ class OneQueryBehavior extends ModelBehavior {
 			$this->__sKeys = array_merge(
 				array_keys($this->settings[$Model->alias]), array('fields', 'alias', 'conditions'));
 		}
+		foreach ($Model->__associations as $association) {
+			$this->__reset[$Model->alias][$association] = $Model->{$association};
+		}
 	}
 
 /**
@@ -297,13 +300,9 @@ class OneQueryBehavior extends ModelBehavior {
  * @access public
  */
 	function reset(&$Model) {
-		if (!empty($this->__reset[$Model->alias]['add'])) {
-			$Model->bindModel($this->__reset[$Model->alias]['add'], false);
+		foreach ($Model->__associations as $association) {
+			$Model->{$association} = $this->__reset[$Model->alias][$association];
 		}
-		if (!empty($this->__reset[$Model->alias]['remove'])) {
-			$Model->unbindModel($this->__reset[$Model->alias]['remove'], false);
-		}
-		unset($this->__reset[$Model->alias]);
 	}
 
 /**
@@ -401,7 +400,6 @@ class OneQueryBehavior extends ModelBehavior {
 						if ($Model !== $Obj && isset($Model->$bAlias)) {
 							foreach ($Model->__associations as $_type) {
 								if (isset($Model->{$_type}[$bAlias])) {
-									$this->__reset[$Model->alias]['add'][$_type][$bAlias] = $Model->{$_type}[$bAlias];
 									$Model->unbindModel(array($_type => array($bAlias)), false);
 									break;
 								}
@@ -410,10 +408,7 @@ class OneQueryBehavior extends ModelBehavior {
 
 						if ($primary) {
 							if ($type === 'hasOne') {
-								$this->__reset[$Model->alias]['add']['hasOne'][$alias] = $bind;
 								$Model->unbindModel(array('hasOne' => array($alias)), false);
-							} else {
-								$this->__reset[$Model->alias]['remove'][$type][] = $bAlias;
 							}
 						}
 						if ($type === 'hasAndBelongsToMany') {
