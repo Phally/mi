@@ -358,12 +358,16 @@ class MiCache extends Object {
 		}
 
 		if (count(func_get_args() > 1 || !is_string($string))) {
+			if (is_object($string)) {
+				$string = func_get_args();
+			}
 			if (is_object($string[0])) {
 				$string[0] = !empty($string[0]->alias)?$string[0]->alias:get_class($string[0]);
 			}
 			if (!$prefix && is_string($string[0])) {
 				$prefix = $string[0] . DS;
 			}
+
 			$string = serialize($string);
 		}
 		$hash = md5(Configure::read('Config.language') . $string);

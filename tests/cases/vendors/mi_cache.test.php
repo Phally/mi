@@ -534,8 +534,13 @@ class MiCacheTestCase extends CakeTestCase {
 		$Socket = new HttpSocket();
 		MiCache::delete($Socket, 'get', 'http://ad7six.com');
 
+		$key1 = MiCache::key($Socket, 'get', 'http://ad7six.com');
+
 		$return = MiCache::data($Socket, 'get', 'http://ad7six.com');
 		$this->assertTrue(strpos($return, 'AD7six'));
+
+		$key2 = MiCache::key($Socket, 'get', 'http://ad7six.com');
+		$this->assertIdentical($key1, $key2, 'Object state is affecting cache key');
 
 		$Socket->reset();
 
@@ -543,7 +548,14 @@ class MiCacheTestCase extends CakeTestCase {
 		$this->assertTrue(strpos($return, 'AD7six'));
 		$this->assertFalse($Socket->response['status']['code'], 'Result not cached, HttpSocket class still made a request');
 
+		$config = MiCache::config();
+		if ($config['mi_cache']['engine'] === 'MiFile') {
+			$this->assertTrue(file_exists($config['mi_cache']['path'] . $key1));
+		}
 		MiCache::delete($Socket, 'get', 'http://ad7six.com');
+		if ($config['mi_cache']['engine'] === 'MiFile') {
+			$this->assertFalse(file_exists($config['mi_cache']['path'] . $key1));
+		}
 	}
 
 /**
