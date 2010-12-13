@@ -488,6 +488,38 @@ class MiCacheTestCase extends CakeTestCase {
 	}
 
 /**
+ * testMi method
+ *
+ * It doesn't really matter which method is called
+ *
+ * @return void
+ * @access public
+ */
+	public function testMi() {
+		$path =TMP . 'mi_cache_test' . DS;
+		$Folder = new Folder($path, true);
+		new File($path . 'one' . DS . 'empty.php', true);
+		new File($path . 'two' . DS . 'empty.php', true);
+		new File($path . 'three' . DS . 'empty.php', true);
+
+		$expected = array(
+			$path . 'one' . DS . 'empty.php',
+			$path . 'three' . DS . 'empty.php',
+			$path . 'two' . DS . 'empty.php',
+		);
+		$return = MiCache::mi('files', $path);
+		sort($return);
+
+		$this->assertIdentical($return, $expected);
+
+		$Folder->delete();
+		$return = MiCache::mi('files', $path);
+		sort($return);
+
+		$this->assertIdentical($return, $expected);
+	}
+
+/**
  * testObjectCall method
  *
  * Check what happens with arbritary object calls
