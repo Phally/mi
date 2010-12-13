@@ -488,35 +488,30 @@ class MiCacheTestCase extends CakeTestCase {
 	}
 
 /**
- * testMi method
+ * testObjectCall method
  *
- * It doesn't really matter which method is called
+ * Check what happens with arbritary object calls
  *
  * @return void
  * @access public
  */
-	public function testMi() {
-		$path =TMP . 'mi_cache_test' . DS;
-		$Folder = new Folder($path, true);
-		new File($path . 'one' . DS . 'empty.php', true);
-		new File($path . 'two' . DS . 'empty.php', true);
-		new File($path . 'three' . DS . 'empty.php', true);
+	public function testObjectCall() {
+		Configure::write('Cache.disable', false);
 
-		$expected = array(
-			$path . 'one' . DS . 'empty.php',
-			$path . 'three' . DS . 'empty.php',
-			$path . 'two' . DS . 'empty.php',
-		);
-		$return = MiCache::mi('files', $path);
-		sort($return);
+		App::import('Core', 'HttpSocket');
+		$Socket = new HttpSocket();
+		MiCache::delete($Socket, 'get', 'http://ad7six.com');
 
-		$this->assertIdentical($return, $expected);
+		$return = MiCache::data($Socket, 'get', 'http://ad7six.com');
+		$this->assertTrue(strpos($return, 'AD7six'));
 
-		$Folder->delete();
-		$return = MiCache::mi('files', $path);
-		sort($return);
+		$Socket->reset();
 
-		$this->assertIdentical($return, $expected);
+		$return = MiCache::data($Socket, 'get', 'http://ad7six.com');
+		$this->assertTrue(strpos($return, 'AD7six'));
+		$this->assertFalse($Socket->response['status']['code'], 'Result not cached, HttpSocket class still made a request');
+
+		MiCache::delete($Socket, 'get', 'http://ad7six.com');
 	}
 
 /**

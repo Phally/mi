@@ -329,7 +329,14 @@ class MiCache extends Object {
 		if ($func === 'find') {
 			$params[1]['miCache'] = 'cacheRequest';
 		}
-		$return = call_user_func_array(array(ClassRegistry::init($name), $func), $params);
+
+		if (is_object($name)) {
+			$Object = $name;
+		} else {
+			$Object = ClassRegistry::init($name);
+		}
+
+		$return = call_user_func_array(array($Object, $func), $params);
 		MiCache::write($cacheKey, $return, MiCache::$setting);
 		return $return;
 	}
@@ -351,10 +358,13 @@ class MiCache extends Object {
 		}
 
 		if (count(func_get_args() > 1 || !is_string($string))) {
+			if (is_object($string[0])) {
+				$string[0] = !empty($string[0]->alias)?$string[0]->alias:get_class($string[0]);
+			}
 			if (!$prefix && is_string($string[0])) {
 				$prefix = $string[0] . DS;
 			}
-			$string = serialize(func_get_args());
+			$string = serialize($string);
 		}
 		$hash = md5(Configure::read('Config.language') . $string);
 		$config = current(MiCache::config());
