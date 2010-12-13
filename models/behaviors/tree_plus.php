@@ -59,7 +59,8 @@ class TreePlusBehavior extends ModelBehavior {
  */
 	function resetDepths(&$Model, $id = null) {
 		if (!$id) {
-			$table = $Model->table;
+			$db =& $Model->getDataSource();
+			$table = $db->config['prefix'] . $Model->table;
 			$Model->query("UPDATE $table SET depth = (
 				SELECT wrapper.parents FROM (
 					SELECT
@@ -73,7 +74,6 @@ class TreePlusBehavior extends ModelBehavior {
 					GROUP BY
 						this.id
 				) AS wrapper WHERE wrapper.row = $table.id)");
-			$db =& ConnectionManager::getDataSource($Model->useDbConfig);
 			if (!$db->error) {
 				return true;
 			}
