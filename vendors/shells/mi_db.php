@@ -135,11 +135,12 @@ class MiDbShell extends Shell {
  */
 	protected $_commands = array(
 		'mongodb.mongodbSource' => array(
+			'noRedirect' => true,
 			'connection' => '--host :host --username ":login" --password ":password"',
 			'connect' => 'mongodb :connection --db :database',
 			'copy' => '',
 			'standardOptions' => '',
-			'dump' => 'mongodump :connection --db :database :extraOptions',
+			'dump' => 'mongodump :connection --db :database  --out :toFile :extraOptions',
 			'import' => 'mongorestore :connection --db :database --drop :file'
 		),
 		'mysql' => array(
@@ -685,7 +686,8 @@ class MiDbShell extends Shell {
 			$this->_exec($command, $return);
 			return $return;
 		}
-		if (empty($settings['toFile'])) {
+		$commands = current($settings['commands']);
+		if (empty($settings['toFile']) || !empty($commands['noRedirect'])) {
 			$out = `$command`;
 			if (empty($this->settings['quiet'])) {
 				$this->out($out);
