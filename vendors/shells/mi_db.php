@@ -635,6 +635,7 @@ class MiDbShell extends Shell {
 		if (empty($this->settings['quiet'])) {
 			$this->out("Running $friendlyName");
 		}
+		$command = preg_replace('@ --\w*[= ][\'"]{2}@ ', '', $command);
 		return $this->_out($command, $settings);
 	}
 
