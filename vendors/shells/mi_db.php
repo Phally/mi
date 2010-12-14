@@ -134,6 +134,14 @@ class MiDbShell extends Shell {
  * @access protected
  */
 	protected $_commands = array(
+		'mongodb.mongodbSource' => array(
+			'connection' => '--host :host --username ":login" --password ":password"',
+			'connect' => 'mongodb :connection --db :database',
+			'copy' => '',
+			'standardOptions' => '',
+			'dump' => 'mongodump :connection --db :database :extraOptions',
+			'import' => 'mongorestore :connection --db :database --drop :file'
+		),
 		'mysql' => array(
 			'connection' => '--host=:host --port=:port --user=:login --password=":password" --default-character-set=:encoding',
 			'connect' => 'mysql :connection :database',
@@ -331,11 +339,13 @@ class MiDbShell extends Shell {
 	public function backup() {
 		$settings = array();
 		if (empty($this->settings['toFile'])) {
-			$settings['toFile'] = $this->_backupName(CONFIGS . 'schema' . DS . 'backups' . DS . $this->settings['-connection']);
+			$settings['toFile'] = $this->_backupName(CONFIGS . 'schema' . DS . 'backups' . DS . $this->settings['-connection'], $this->settings['-connection']);
 			if (isset($this->args[0])) {
 				$settings['toFile'] .= '_' . Inflector::underscore($this->args[0]);
 			}
-			$settings['toFile'] .= '.sql';
+			if (key($this->settings['commands']) !== 'mongodb.mongodbSource') {
+				$settings['toFile'] .= '.sql';
+			}
 		}
 		$this->_run('backup', 'dump', null, $settings);
 
