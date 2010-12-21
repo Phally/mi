@@ -188,7 +188,7 @@ class MiHtmlHelper extends HtmlHelper {
 			if (isset($url['controller'])) {
 				$controller = $url['controller'];
 			}
-			$controller = Inflector::underscore($controller);
+			$controller = Inflector::camelize($controller);
 			if (isset($this->__view->viewVars['postActions'][$controller])) {
 				$postActions = $this->__view->viewVars['postActions'][$controller];
 				if (isset($url['admin']) || isset($this->__view->params['admin'])) {

@@ -261,15 +261,18 @@ class SwissArmyComponent extends Object {
 		}
 
 		if (!empty($C->postActions)) {
-			if (!empty($C->viewVars['postActions'])) {
-				$postActions = $C->viewVars['postActions'];
+			if (is_array(current($C->postActions))) {
+				$C->set('postActions', $C->postActions);
 			} else {
-				$postActions = array();
-			}
-			$index = Inflector::underscore($C->name);
-			if (empty($postActions[$index])) {
-				$postActions[$index, $C->postActions);
-				$C->set('postActions', $postActions);
+				if (!empty($C->viewVars['postActions'])) {
+					$postActions = $C->viewVars['postActions'];
+				} else {
+					$postActions = array();
+				}
+				if (empty($postActions[$C->name])) {
+					$postActions[$C->name] = $C->postActions;
+					$C->set('postActions', $postActions);
+				}
 			}
 		}
 	}
@@ -372,13 +375,18 @@ class SwissArmyComponent extends Object {
 		if (empty($C->postActions)) {
 			return;
 		}
+
+		$postActions = $C->postActions;
+		if (isset($postActions[$C->name])) {
+			$postActions = $postActions[$C->name];
+		}
 		if (isset($C->Security)) {
-			if (in_array($C->action, $C->postActions)) {
+			if (in_array($C->action, $postActions)) {
 				$C->Security->disabledFields[] = 'App.submit';
 			}
 			$C->Security->blackHoleCallback = '_blackHole';
-			call_user_func_array(array(&$C->Security, 'requirePost'), $C->postActions);
-		} elseif (in_array($C->action, $C->postActions)) {
+			call_user_func_array(array(&$C->Security, 'requirePost'), $postActions);
+		} elseif (in_array($C->action, $postActions)) {
 			if (!$C->data) {
 				return $C->_blackHole('post');
 			} elseif (!$C->RequestHandler->isAjax() && $C->data['App']['submit'] !== $C->data['App']['continue']) {
