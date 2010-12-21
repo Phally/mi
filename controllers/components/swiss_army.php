@@ -259,8 +259,18 @@ class SwissArmyComponent extends Object {
 		if (!isset ($C->viewVars['modelClass'])) {
 			$C->set('modelClass', $C->modelClass);
 		}
+
 		if (!empty($C->postActions)) {
-			$C->set('postActions', array(Inflector::underscore($C->name) => $C->postActions));
+			if (!empty($C->viewVars['postActions'])) {
+				$postActions = $C->viewVars['postActions'];
+			} else {
+				$postActions = array();
+			}
+			$index = Inflector::underscore($C->name);
+			if (empty($postActions[$index])) {
+				$postActions[$index, $C->postActions);
+				$C->set('postActions', $postActions);
+			}
 		}
 	}
 
