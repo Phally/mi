@@ -246,7 +246,8 @@ class SwissArmyComponent extends Object {
 		if (empty($C) || !empty($C->params['requested'])) {
 			return;
 		}
-		if ($this->_storeHistory() && $this->_here !== $this->_last) {
+		if ($C->name !== 'CakeError' && $this->_storeHistory() &&
+			$this->_here && $this->_here !== $this->_last) {
 			$thread = $this->_browseKey();
 			$this->_browseHistory($thread);
 			$this->_history[$thread][$this->_here] = $this->_last;
