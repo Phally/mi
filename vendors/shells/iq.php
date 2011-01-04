@@ -392,7 +392,7 @@ class IqShell extends Shell {
 		$options = array('name' => Inflector::camelize($id));
 		$Schema = $this->Schema->load($options);
 		if (!$Schema) {
-			$this->err(sprintf(__('%s could not be loaded', true), $this->Schema->path . $this->Schema->file));
+			$this->err(sprintf(__d('mi', '%s could not be loaded', true), $this->Schema->path . $this->Schema->file));
 			$this->_stop();
 		}
 
@@ -406,7 +406,7 @@ class IqShell extends Shell {
 				$this->__update($Schema, $table);
 			break;
 			default:
-				$this->err(__('Command not found', true));
+				$this->err(__d('mi', 'Command not found', true));
 				$this->_stop();
 		}
 	}
@@ -420,7 +420,7 @@ class IqShell extends Shell {
 	private function __update(&$Schema, $table = null) {
 		$db =& ConnectionManager::getDataSource($this->Schema->connection);
 
-		$this->out(__('Comparing Database to Schema...', true));
+		$this->out(__d('mi', 'Comparing Database to Schema...', true));
 		$options = array();
 		if (isset($this->params['f'])) {
 			$options['models'] = false;
@@ -439,19 +439,19 @@ class IqShell extends Shell {
 		}
 
 		if (empty($contents)) {
-			$this->out(__('Schema is up to date.', true));
+			$this->out(__d('mi', 'Schema is up to date.', true));
 			$this->_stop();
 		}
 
-		$this->out("\n" . __('The following statements will run.', true));
+		$this->out("\n" . __d('mi', 'The following statements will run.', true));
 		$this->out(array_map('trim', $contents));
-		if ('y' == $this->in(__('Are you sure you want to alter the tables?', true), array('y', 'n'), 'n')) {
+		if ('y' == $this->in(__d('mi', 'Are you sure you want to alter the tables?', true), array('y', 'n'), 'n')) {
 			$this->out('');
-			$this->out(__('Updating Database...', true));
+			$this->out(__d('mi', 'Updating Database...', true));
 			$this->__run($contents, 'update', $Schema);
 		}
 
-		$this->out(__('End update.', true));
+		$this->out(__d('mi', 'End update.', true));
 	}
 
 /**
@@ -461,7 +461,7 @@ class IqShell extends Shell {
  */
 	private function __run($contents, $event, &$Schema) {
 		if (empty($contents)) {
-			$this->err(__('Sql could not be run', true));
+			$this->err(__d('mi', 'Sql could not be run', true));
 			return;
 		}
 		Configure::write('debug', 2);
@@ -470,7 +470,7 @@ class IqShell extends Shell {
 
 		foreach ($contents as $table => $sql) {
 			if (empty($sql)) {
-				$this->out(sprintf(__('%s is up to date.', true), $table));
+				$this->out(sprintf(__d('mi', '%s is up to date.', true), $table));
 			} else {
 				if (!$Schema->before(array($event => $table))) {
 					return false;
@@ -485,7 +485,7 @@ class IqShell extends Shell {
 				if (!empty($error)) {
 					$this->out($error);
 				} else {
-					$this->out(sprintf(__('%s updated.', true), $table));
+					$this->out(sprintf(__d('mi', '%s updated.', true), $table));
 				}
 			}
 		}

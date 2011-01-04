@@ -150,7 +150,7 @@ class SwissArmyComponent extends Object {
 			}
 		}
 		$this->$name =& $C->$name;
-		if($init && is_callable(array($this->$name, 'initialize'))) {
+		if ($init && is_callable(array($this->$name, 'initialize'))) {
 			$this->$name->initialize($C, $config);
 		}
 	}
@@ -243,7 +243,7 @@ class SwissArmyComponent extends Object {
 	public function beforeRender() {
 		$C =& $this->Controller;
 
-		if (empty ($C) || !empty($C->params['requested'])) {
+		if (empty($C) || !empty($C->params['requested'])) {
 			return;
 		}
 		if ($this->_storeHistory() && $this->_here !== $this->_last) {
@@ -253,10 +253,10 @@ class SwissArmyComponent extends Object {
 			$this->Session->write('history.' . $thread, $this->_history[$thread]);
 		}
 		$this->Session->write('referer', $this->_last);
-		if (!isset ($C->viewVars['data'])) {
+		if (!isset($C->viewVars['data'])) {
 			$C->set('data', $C->data);
 		}
-		if (!isset ($C->viewVars['modelClass'])) {
+		if (!isset($C->viewVars['modelClass'])) {
 			$C->set('modelClass', $C->modelClass);
 		}
 
@@ -278,9 +278,9 @@ class SwissArmyComponent extends Object {
 	}
 
 /**
- * For a get request for a postAction method (cannot be run via get, must by POST|PUT|DELETE)
+ * For a GET request for a postAction method (cannot be run via GET, must be POST|PUT|DELETE)
  *
- * If the reason is becuase it's a GET request
+ * If the reason is because it's a GET request
  * 	If debug it 0
  * 		Check that the hash of the url matches the passed $_GET['token'] and if not - bail
  * 	Always
@@ -360,12 +360,12 @@ class SwissArmyComponent extends Object {
 	}
 
 /**
- * handlePostActions method
+ * Handle POST only actions defined inside controller's $postActions.
  *
  * Setup the security component if set, otherwise:
  *
- * if a GET request has been made for a POST/DELETE only action render a confirmation form
- * If a POST/DELETE request is received only continue if they clicked the submit button
+ * If a GET request has been made for a POST/DELETE only action render a confirmation form.
+ * If a POST/DELETE request is received only continue if submit button is clicked.
  *
  * @return void
  * @access public
@@ -505,13 +505,11 @@ class SwissArmyComponent extends Object {
 	}
 
 /**
- * browseHistory method
- *
- * Called during beforeRender. Any controller action which renders a view will appear in the browse history - only for
- * get requests.
- * Useful if you always want to go back to the previous url, rather than the first entry point such as for the auth
- * login action.
+ * Called during beforeRender.
+ * Any controller action which renders a view will appear in the browse history, only for get requests.
  * This session history is used by the back function (only when no referer is present).
+ * Useful if you always want to go back to the previous url, rather than the first entry point
+ * such as for the auth login action.
  *
  * @param int $thread
  * @return void
@@ -604,7 +602,7 @@ class SwissArmyComponent extends Object {
 				foreach ($C->data as $alias => $fields) {
 					if (isset($C->$alias)) {
 						$inst = $C->$alias;
-					} elseif(isset($inst->{$C->modelClass}->$alias)) {
+					} elseif (isset($inst->{$C->modelClass}->$alias)) {
 						$inst = $inst->{$C->modelClass}->$alias;
 					} else {
 						if ($alias === 'App' || is_numeric($alias[0])) {
@@ -691,18 +689,16 @@ class SwissArmyComponent extends Object {
 	}
 
 /**
- * redirect method
- *
- * If it's an ajax request and the force parameter is true - render a js redirect
+ * If it's an ajax request and the force parameter is true, render a js redirect.
  *
  * @param mixed $url
- * @param mixed $code
+ * @param mixed $status
  * @param mixed $exist
  * @param mixed $force
  * @return void
  * @access public
  */
-	public function redirect($url, $code, $exist, $force) {
+	public function redirect($url, $status, $exist, $force) {
 		$C =& $this->Controller;
 		if (!$C) {
 			return false;
@@ -920,7 +916,7 @@ class SwissArmyComponent extends Object {
 			$url = preg_replace('@^' . $this->webroot . '@', '/', $url);
 		}
 		if (is_string($url) && $url && $url[0] === '/' && $this->settings['usingSubdomains']) {
-		   $url = 'http://' . env('HTTP_HOST') . $url;
+			$url = 'http://' . env('HTTP_HOST') . $url;
 		}
 
 		if ($key && is_string($url)) {
