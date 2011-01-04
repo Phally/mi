@@ -521,8 +521,9 @@ class SwissArmyComponent extends Object {
 		if (!$this->settings['browseHistory'] || !empty($_FORM) && empty($C->params['requested'])) {
 			return;
 		}
-		if (count($this->Session->read('history.' . $thread)) > $this->settings['browseHistory']) {
-			array_shift($_SESSION['history'][$thread]);
+		if ($thread && count($this->Session->read('history.' . $thread)) >= $this->settings['browseHistory']) {
+			$_SESSION['history'][$thread] = $this->_history[$thread] =
+				array_slice($_SESSION['history'][$thread], -($this->settings['browseHistory'] - 1), null, true);
 		}
 	}
 
