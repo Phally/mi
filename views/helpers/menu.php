@@ -158,6 +158,14 @@ class MenuHelper extends AppHelper {
  * 	$menu->add(array('url' => $url, 'title' => $title, 'htmlAttributes' => array('id' => 'foo'));
  *  	array syntax, setting id for the link, not the li
  *
+ * 	The author's prefered usage:
+ * 	$menu->add(array(
+ * 		array('url' => $url, 'title' => $title),
+ * 		array('url' => $url2, 'title' => $title2, 'under' => $title),
+ * 		array('url' => $url3, 'title' => $title3, 'under' => $title),
+ * 		...
+ * 	));
+ *
  * @param string $section
  * @param mixed $title
  * @param mixed $url
