@@ -87,8 +87,10 @@ class MiFormHelper extends FormHelper {
 			}
 		}
 
+		$noReferer = !empty($options['noReferer']);
+		unset($options['noReferer']);
 		$return = parent::create($model, $options);
-		if (!empty($options['noReferer'])) {
+		if ($noReferer) {
 			return $return;
 		}
 		if (!empty($this->data['App']['referer'])) {
