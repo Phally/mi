@@ -316,10 +316,10 @@ class TreeHelper extends AppHelper {
 		/* Some useful vars */
 		$hasChildren = $firstChild = $lastChild = $hasVisibleChildren = false;
 		$numberOfDirectChildren = $numberOfTotalChildren = null;
-		if (isset($result['children'])) {
-			if ($result['children']) {
+		if (isset($row['children'])) {
+			if ($row['children']) {
 				$hasChildren = $hasVisibleChildren = true;
-				$numberOfDirectChildren = count($result['children']);
+				$numberOfDirectChildren = count($row['children']);
 			}
 			$key = array_search($i, $keys);
 			if ($key == 0) {
