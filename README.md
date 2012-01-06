@@ -1,5 +1,6 @@
-Mi. Core functions and classes
-=========================
+# Mi. ![Project status](http://stillmaintained.com/AD7six/mi.png?20120106)
+
+Core functions and classes
 
 Mi is a plugin of utility classes, providing base functionality for other Mi plugins.
 
